@@ -255,7 +255,7 @@ class one_hot_encoder_batch:
             for col in columns:
                 num_col = self._smart_mapping(col,df)
                 # num_col = np.array(map(lambda x:self.categorical_mapping[col][x], df[col])).reshape(len(df[col]),1)
-                ohe_transformed = pd.DataFrame(data=self.models[col].transform(num_col),
+                ohe_transformed = pd.DataFrame(data=self.models[col].transform(num_col).toarray(),
                                                columns=[col+'_'+str(n) for n in self.models[col].active_features_],index=df.index)
                 res = res.merge(ohe_transformed, left_index=True, right_index=True)
                 del ohe_transformed
@@ -264,7 +264,7 @@ class one_hot_encoder_batch:
         else:
             col = list_of_col
             num_col = np.array(map(lambda x:self.categorical_mapping[col][x], df[col])).reshape(len(df[col]),1)
-            ohe_transformed = pd.DataFrame(data=self.models[col].transform(num_col),
+            ohe_transformed = pd.DataFrame(data=self.models[col].transform(num_col).toarray(),
                                            columns=[col+'_'+str(n) for n in self.models[col].active_features_], index=df.index)
             res = res.merge(ohe_transformed, left_index=True, right_index=True)
         return res
@@ -339,7 +339,14 @@ if __name__ == "__main__":
 
     print len(main.test.input.columns),len(main.train.input.columns)
 
-    
+    param = {"max_depth":3,"learning_rate":0.1,"n_estimators":300}
+    main.xgboost_init(xgboost.XGBClassifier,param)
+    feature = [col for col in main.train.input if col != 'ID' and col != 'target']
+    x_train = main.train.input[feature]
+    y_train = main.train.input['target']
+    main.xgboost.fit(x_train,y_train)
+
+
 
 
 
