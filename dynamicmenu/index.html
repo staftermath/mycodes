@@ -1,0 +1,26 @@
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
+<body>
+<script type="text/javascript" src="cascadingMenu.js"></script>
+<div id="menu"></div>
+<script type="text/javascript">
+var jsonfile = (function () {
+    var json = null;
+    $.ajax({
+        'async': false,
+        'global': false,
+        'url': 'data.json',
+        'dataType': "json",
+        'success': function (data) {
+            json = data;
+        }
+    });
+    return json;
+})(); 
+
+var menulist = ["type", "subcat", "name"];
+function BuildMenu(thismenu){
+			BuildDynamicMenu(thismenu=thismenu, object=jsonfile, levels=menulist, ids=menulist)
+	}
+BuildSelectorSkeleton(target="#menu", levels=menulist, ids=menulist, classes=["selector","selector","selector"], object=jsonfile, buildmenu="BuildMenu");
+</script>
+</body>

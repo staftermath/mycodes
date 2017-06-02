@@ -1,0 +1,9 @@
+{
+"food":{
+  "beverages": ["Coffee","Coke"],
+  "snacks": ["Chips","Cookies"]},
+  "medicion":{
+  	"liquid":["Nyquil"],
+  	"pill":["movefree"]
+  }
+}
